@@ -16,10 +16,70 @@ public:
 };
 
 class BSearchTree{
-
+private:
     int nodeVisitCount;    // 노드를 방문하는 횟수 저장
     Node* root;
 
+public:
+    BSearchTree() {
+        root = NULL;
+        nodeVisitCount = 0;
+    }
+
+    ~BSearchTree() {
+        stack<Node*> st;
+
+        st.push(root);
+        if (root->left != NULL)
+            appendStack(st, root->left);
+        if (root->right != NULL)
+            appendStack(st, root->right);
+
+        cout << "delete : ";
+        while (0 < st.size()) {
+            Node* node = st.top();
+            cout << node->key << ",";
+            delete node;
+            st.pop();
+        }
+        cout << "\n";
+    }
+
+    int getVisitCount() {
+        return nodeVisitCount;
+    }
+
+    // 노드 삽입
+    Node* insertdata(int key) {
+        if (!root) {
+            root = new Node(key);
+            return root;
+        }
+        return insertdata(root, key);
+    }
+
+    // key값 검색
+    Node* searchdata(int key) {
+        nodeVisitCount = 0;
+        return searchdata(root, key);
+    }
+
+    // 전위 순회로 출력
+    void preorder() {
+        preorder(root);
+    }
+
+    // 중위 순회로 출력
+    void inorder() {
+        inorder(root);
+    }
+
+    // 후위 순회로 출력
+    void postorder() {
+        postorder(root);
+    }
+
+private:
     // 노드들을 삭제하기 위해 DFS로 노드를 수집한다.
     void appendStack(stack<Node*>& st, Node* node){
         st.push(node);
@@ -59,98 +119,33 @@ class BSearchTree{
     }
 
 
-
     // 전위순회
-
     void preorder(Node* node) {
-        if (node == NULL)   return;
+        if (node == NULL)   
+            return;
         printf("%d \n", node->key);
 
         preorder(node->left);
         preorder(node->right);
     }
 
-
     // 중위순회
     void inorder(Node* node) {
 
-        if (node == NULL)   return;
+        if (node == NULL)   
+            return;
         inorder(node->left);
         printf("%d \n", node->key);
         inorder(node->right);
     }
 
-
-
     // 후위순회
     void postorder(Node* node) {
-        if (node == NULL)   return;
+        if (node == NULL)   
+            return;
         postorder(node->left);
         postorder(node->right);
         printf("%d \n", node->key);
-    }
-
-public:
-    BSearchTree() {
-        root = NULL;
-        nodeVisitCount = 0;
-    }
-
-    ~BSearchTree() {
-        stack<Node*> st;
-
-        st.push(root);
-        if (root->left != NULL) 
-            appendStack(st, root->left);
-        if (root->right != NULL) 
-            appendStack(st, root->right);
-
-        cout << "delete : ";
-        while (0 < st.size())  {
-            Node* node = st.top();
-            cout << node->key << ",";
-            delete node;
-            st.pop();
-        }
-        cout << "\n";
-    }
-
-
-
-    int getVisitCount() {
-        return nodeVisitCount;
-    }
-
-    // 노드 삽입
-    Node* insertdata(int key) {
-        if (!root) {
-            root = new Node(key);
-            return root;
-        }
-        return insertdata(root, key);
-    }
-
-    // key값 검색
-    Node* searchdata(int key)    {
-        nodeVisitCount = 0;
-        return searchdata(root, key);
-    }
-
-
-
-    // 전위 순회로 출력
-    void preorder() { 
-        preorder(root); 
-    }
-
-    // 중위 순회로 출력
-    void inorder() {
-        inorder(root); 
-    }
-
-    // 후위 순회로 출력
-    void postorder() { 
-        postorder(root); 
     }
 
 };
